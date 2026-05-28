@@ -21,4 +21,4 @@ async def generate_qr(client, message):
         await message.reply_photo(file_path, caption=f"{BOT_NAME}\nQR Code for: `{text}`")
         qr_del(file_path)
     else:
-        await message.reply_text("Failed to generate QR code. Please try again later.", quote=True)
+        await message.reply_text("Failed to generate QR code. Please try again later.", quote=True).
