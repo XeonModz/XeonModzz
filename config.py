@@ -22,7 +22,7 @@ BOT_START_TIME = time.time()
 COOKIES = os.environ.get("YOUTUBE_COOKIES", "")
 OWNER_NAME = os.environ.get("OWNER_NAME", "XeonModz")
 OWNER_URL = os.environ.get("OWNER_URL","https://xeonmodz-online.onrender.com")
-
+IMAGE_URL = "https://i.ibb.co/wHnkzmd/temp.jpg"
 OWNER_ID = int(os.environ.get("OWNER_ID", "7833143784"))
 
 MONGO_URL = os.environ.get(
