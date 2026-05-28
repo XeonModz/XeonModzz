@@ -12,8 +12,8 @@ A simple Telegram bot built using [Pyrogram](https://github.com/pyrogram/pyrogra
 ## Installation
 1. Clone the repository:
    ```sh
-   git clone https://github.com/Dot-ser/PyroRose-V1.git
-   cd PyroRose-V1
+   git clone https://github.com/XeonModz/XeonModzz.git
+   cd XeonModzz
    ```
 2. Install dependencies:
    ```sh
