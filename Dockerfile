@@ -1,7 +1,7 @@
 # Use Python 3.10 as the base image
 FROM python:3.10-slim
 
-WORKDIR /DOTSERMODZ
+WORKDIR /XeonModz
 
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
@@ -10,4 +10,4 @@ COPY . .
 
 RUN apt-get update && apt-get install -y ffmpeg && rm -rf /var/lib/apt/lists/*
 
-CMD ["python3", "-m", "dotsermodz"]
+CMD ["python3", "-m", "xeonmodz"]

@@ -1,4 +1,4 @@
-# PYRO ROSE V1
+# XEON MODZ V1
 
 A simple Telegram bot built using [Pyrogram](https://github.com/pyrogram/pyrogram) & [Pyrofrok](https://github.com/Mayuri-Chan/pyrofork), featuring basic command-line utilities.
 
@@ -32,7 +32,7 @@ A simple Telegram bot built using [Pyrogram](https://github.com/pyrogram/pyrogra
 ## Usage
 Run the bot with:
 ```sh
-python3 -m dotsermodz
+python3 -m xeonmodz
 ```
 
 ## Deployment
