@@ -1,14 +1,13 @@
 # ©️ 2025 xeonmodz ALL RIGHTS RESERVED
 
 import logging
-from pyrogram import Client, filters
+from pyrogram import filters, __version__
 from pyrogram.types import (
     InlineKeyboardMarkup,
     InlineKeyboardButton,
     CallbackQuery,
     InputMediaPhoto
 )
-from pyrogram import __version__
 
 from xeonmodz.lib.base import IMAGE_LINK
 from xeonmodz.lib.mode import isPrivate
@@ -16,10 +15,7 @@ from xeonmodz import app
 from config import BOT_NAME, OWNER_NAME, OWNER_URL, OWNER_ID
 
 
-# =========================
 # START COMMAND
-# =========================
-
 @app.on_message(filters.command("start"))
 @isPrivate
 async def start(client, message):
@@ -54,11 +50,8 @@ async def start(client, message):
     logging.info(f"Start message sent to {message.chat.id}")
 
 
-# =========================
 # MENU COMMAND
-# =========================
-
-@app.on_message(filters.command(["menu", "help"]))
+@app.on_message(filters.command(["menu", "help", "list"]))
 @isPrivate
 async def menu(client, message):
 
@@ -68,8 +61,9 @@ async def menu(client, message):
         "/start": "Start the bot",
         "/alive": "Check bot status",
         "/menu": "Show available commands",
-        "/eval": "Evaluate Python code",
         "/help": "Show help message",
+        "/list": "Show command list",
+        "/eval": "Evaluate Python code",
         "/id": "Get chat ID",
         "/ping": "Check bot latency",
         "/reboot": "Restart the bot",
@@ -106,26 +100,16 @@ async def menu(client, message):
         ]
     )
 
-    # Works for both command and callback query
-    if hasattr(message, "reply_photo"):
-        await message.reply_photo(
-            photo=IMAGE_LINK,
-            caption=menu_text,
-            reply_markup=keyboard
-        )
-    else:
-        await message.edit_caption(
-            caption=menu_text,
-            reply_markup=keyboard
-        )
+    await message.reply_photo(
+        photo=IMAGE_LINK,
+        caption=menu_text,
+        reply_markup=keyboard
+    )
 
     logging.info(f"Menu sent to {message.chat.id}")
 
 
-# =========================
 # OWNER INFO
-# =========================
-
 async def owner_info(client, query):
 
     await query.message.edit_text(
@@ -143,10 +127,7 @@ async def owner_info(client, query):
     )
 
 
-# =========================
 # CALLBACK HANDLER
-# =========================
-
 @app.on_callback_query()
 async def cb_handler(client, query: CallbackQuery):
 
@@ -160,8 +141,9 @@ async def cb_handler(client, query: CallbackQuery):
                 f"<b>🤖 {BOT_NAME}</b>\n\n"
                 f"<b>○ Creator :</b> <a href='tg://user?id={OWNER_ID}'>This Person</a>\n"
                 f"<b>○ Language :</b> <code>Python3</code>\n"
-                f"<b>○ Library :</b> <a href='https://docs.pyrogram.org/'>Pyrogram {__version__}</a>\n"
-                f"<b>○ Source Code :</b> <a href='https://github.com/XeonModz/XeonModzz'>Click here</a>"
+                f"<b>○ Library :</b> "
+                f"<a href='https://docs.pyrogram.org/'>Pyrogram {__version__}</a>\n"
+                f"<b>○ Source Code :</b> <a href=''>Click here</a>"
             ),
             disable_web_page_preview=True,
             reply_markup=InlineKeyboardMarkup(
@@ -171,7 +153,37 @@ async def cb_handler(client, query: CallbackQuery):
 
     # MENU
     elif data == "menu":
-        await menu(client, query)
+
+        ascii_border = f"\n**❍⊷══〘{BOT_NAME}〙═══⊷❍**\n"
+
+        commands = {
+            "/start": "Start the bot",
+            "/alive": "Check bot status",
+            "/menu": "Show available commands",
+            "/help": "Show help message",
+            "/list": "Show command list",
+            "/ping": "Check bot latency"
+        }
+
+        menu_text = f"{ascii_border}\n"
+        menu_text += "**🕊️ Available Commands:**\n\n"
+
+        for cmd, desc in commands.items():
+            menu_text += f"➤ {cmd} - {desc}\n"
+
+        keyboard = InlineKeyboardMarkup(
+            [
+                [InlineKeyboardButton("⬅️ Back", callback_data="back_to_start")]
+            ]
+        )
+
+        await query.message.edit_media(
+            media=InputMediaPhoto(
+                media=IMAGE_LINK,
+                caption=menu_text
+            ),
+            reply_markup=keyboard
+        )
 
     # OWNER INFO
     elif data == "owner_info":
