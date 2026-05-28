@@ -19,12 +19,14 @@ XEON_PIN_API = "https://xeon-pin-api.onrender.com"
 RENDER_API_TOKEN = os.environ.get("RENDER_API_TOKEN")
 BOT_LOGO = os.environ.get("BOT_LOGO")
 BOT_START_TIME = time.time()
-CATBOX_API_URL = "https://catbox.moe/user/api.php"
 COOKIES = os.environ.get("YOUTUBE_COOKIES", "")
 OWNER_NAME = os.environ.get("OWNER_NAME", "XeonModz")
 OWNER_URL = os.environ.get("OWNER_URL","https://xeonmodz-online.onrender.com")
-OWNER_ID = int(os.environ.get("OWNER_ID", "7142034518"))
-MONGO_URL = os.environ.get("MONGO_URL", "")
+OWNER_ID = int(os.environ.get("OWNER_ID", "7833143784"))
+MONGO_URL = os.environ.get(
+    "MONGO_URL",
+    "mongodb+srv://Xeon:XeonGamingYT@xeon.dig9eor.mongodb.net/myDatabase?retryWrites=true&w=majority&appName=Xeon"
+)
 RENDER_EXTERNAL_URL = os.environ.get("RENDER_EXTERNAL_URL")
 if not API_ID or not API_HASH or not BOT_TOKEN:
     raise ValueError("Missing required environment variables! Check your .env file.")
