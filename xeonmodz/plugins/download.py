@@ -9,6 +9,11 @@ import requests
 @isPrivate
 async def insta_downloader(client, message):
 
+    try:
+        await message.react("⚡")
+    except Exception:
+        pass
+
     if len(message.command) < 2:
         return await message.reply_text(
             "Usage:\n/insta instagram_url"
@@ -41,14 +46,14 @@ async def insta_downloader(client, message):
 
             await message.reply_video(
                 video=media,
-                caption="XeonModz"
+                caption="𝚾𝛆𝛐𝛈𝚳𝛐𝛛𝐳"
             )
 
         elif media_type == "image":
 
             await message.reply_photo(
                 photo=media,
-                caption="XeonModz"
+                caption="𝚾𝛆𝛐𝛈𝚳𝛐𝛛𝐳"
             )
 
         else:
@@ -69,6 +74,11 @@ async def insta_downloader(client, message):
 @isPrivate
 async def pinterest_downloader(client, message):
 
+    try:
+        await message.react("⚡")
+    except Exception:
+        pass
+
     if len(message.command) < 2:
         return await message.reply_text(
             "Usage:\n/pin pinterest_url"
@@ -81,6 +91,7 @@ async def pinterest_downloader(client, message):
         response = requests.get(
             f"https://xeon-pin-api.onrender.com/pin?url={query}"
         )
+
         data = response.json()
 
     except Exception as e:
@@ -95,36 +106,26 @@ async def pinterest_downloader(client, message):
             "Failed to fetch Pinterest media."
         )
 
-    videos = [
-        vid for vid in data.get("videos", [])
-        if isinstance(vid, str)
-        and vid.startswith("http")
-    ]
-
-    images = [
-        img for img in data.get("images", [])
-        if isinstance(img, str)
-        and img.startswith("http")
-        and ".png)}" not in img
-    ]
+    video = data.get("video")
+    image = data.get("image")
 
     try:
 
-        for vid in videos:
+        if video:
 
             await message.reply_video(
-                video=vid,
-                caption="XeonModz"
+                video=video,
+                caption="𝚾𝛆𝛐𝛈𝚳𝛐𝛛𝐳"
             )
 
-        for img in images:
+        elif image:
 
             await message.reply_photo(
-                photo=img,
-                caption="XeonModz"
+                photo=image,
+                caption="𝚾𝛆𝛐𝛈𝚳𝛐𝛛𝐳"
             )
 
-        if not videos and not images:
+        else:
 
             await message.reply_text(
                 "No media found."
