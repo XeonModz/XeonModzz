@@ -11,7 +11,7 @@ async def insta_downloader(client, message):
 
     try:
         await message.react("⚡")
-    except:
+    except Exception:
         pass
 
     if len(message.command) < 2:
@@ -21,13 +21,10 @@ async def insta_downloader(client, message):
 
     query = message.command[1]
 
-    api = (
-        "https://xeon-insta-api.onrender.com/"
-        f"insta?url={query}"
-    )
-
     try:
-        response = requests.get(api)
+        response = requests.get(
+            f"https://xeon-insta-api.onrender.com/insta?url={query}"
+        )
         data = response.json()
 
     except Exception as e:
@@ -79,7 +76,7 @@ async def pinterest_downloader(client, message):
 
     try:
         await message.react("⚡")
-    except:
+    except Exception:
         pass
 
     if len(message.command) < 2:
@@ -89,21 +86,21 @@ async def pinterest_downloader(client, message):
 
     query = message.command[1]
 
-    api = (
-        "https://xeon-pin-api.onrender.com/"
-        f"pin?url={query}"
-    )
-
     try:
-        response = requests.get(api)
+
+        response = requests.get(
+            f"https://xeon-pin-api.onrender.com/pin?url={query}"
+        )
         data = response.json()
 
     except Exception as e:
+
         return await message.reply_text(
             f"API Error:\n{e}"
         )
 
     if not data.get("status"):
+
         return await message.reply_text(
             "Failed to fetch Pinterest media."
         )
@@ -117,10 +114,12 @@ async def pinterest_downloader(client, message):
     for vid in videos:
 
         try:
+
             await message.reply_video(
                 video=vid,
                 caption="𝚾𝛆𝛐𝛈𝚳𝛐𝛛𝐳"
             )
+
         except Exception:
             pass
 
@@ -134,14 +133,17 @@ async def pinterest_downloader(client, message):
     for img in images:
 
         try:
+
             await message.reply_photo(
                 photo=img,
                 caption="𝚾𝛆𝛐𝛈𝚳𝛐𝛛𝐳"
             )
+
         except Exception:
             pass
 
     if not videos and not images:
+
         await message.reply_text(
             "No media found."
         )

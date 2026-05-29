@@ -21,7 +21,7 @@ async def alive(client, message):
     f"┃{star}│🤖 **Bot Name:** {client.me.first_name}\n"
     f"┃{star}│🆔 **Username:** @{client.me.username}\n"
     f"┃{star}│🕒 **OS Uptime:** {os_uptime}\n"
-    f"┃{star}│🚀 Powered by DOT-007\n"
+    f"┃{star}│🚀 Powered by 𝚾𝛆𝛐𝛈𝚳𝛐𝛛𝐳\n"
     f"╰═════════════════⊷"
     )
 
@@ -53,7 +53,7 @@ async def alive(client, message):
     f"┃{star}│🤖 **Bot Name:** {client.me.first_name}\n"
     f"┃{star}│🆔 **Username:** @{client.me.username}\n"
     f"┃{star}│⏳ **Uptime:** {uptime_str}\n"
-    f"┃{star}│🚀 Powered by DOT-007\n"
+    f"┃{star}│🚀 Powered by 𝚾𝛆𝛐𝛈𝚳𝛐𝛛𝐳\n"
     f"╰═════════════════⊷"
                     )
 
