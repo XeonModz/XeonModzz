@@ -12,6 +12,8 @@ import requests
 @isPrivate
 async def insta_downloader(client, message):
 
+    await message.react("⚡")
+
     if len(message.command) < 2:
         return await message.reply_text(
             "Please provide an Instagram URL."
@@ -43,7 +45,6 @@ async def insta_downloader(client, message):
 
     media = data.get("media")
     media_type = data.get("type")
-    owner = data.get("owner", "Unknown")
 
     try:
 
@@ -51,20 +52,14 @@ async def insta_downloader(client, message):
 
             await message.reply_video(
                 video=media,
-                caption=(
-                    f"Downloaded from Instagram\n"
-                    f"Owner: {owner}"
-                )
+                caption="𝚾𝛆𝛐𝛈𝚳𝛐𝛛𝐳"
             )
 
         elif media_type == "image":
 
             await message.reply_photo(
                 photo=media,
-                caption=(
-                    f"Downloaded from Instagram\n"
-                    f"Owner: {owner}"
-                )
+                caption="𝚾𝛆𝛐𝛈𝚳𝛐𝛛𝐳"
             )
 
         else:
@@ -84,6 +79,8 @@ async def insta_downloader(client, message):
 @app.on_message(filters.command("pin"))
 @isPrivate
 async def pinterest_downloader(client, message):
+
+    await message.react("⚡")
 
     if len(message.command) < 2:
         return await message.reply_text(
@@ -114,9 +111,6 @@ async def pinterest_downloader(client, message):
             "Failed to fetch Pinterest media."
         )
 
-    creator = data.get("creator", "Unknown")
-
-    # Videos
     videos = [
         vid for vid in data.get("videos", [])
         if isinstance(vid, str)
@@ -129,17 +123,13 @@ async def pinterest_downloader(client, message):
 
             await message.reply_video(
                 video=vid,
-                caption=(
-                    f"Downloaded from Pinterest\n"
-                    f"Creator: {creator}"
-                )
+                caption="𝚾𝛆𝛐𝛈𝚳𝛐𝛛𝐳"
             )
 
         except Exception as e:
 
             print(f"Video Error: {e}")
 
-    # Images
     images = [
         img for img in data.get("images", [])
         if isinstance(img, str)
@@ -153,10 +143,7 @@ async def pinterest_downloader(client, message):
 
             await message.reply_photo(
                 photo=img,
-                caption=(
-                    f"Downloaded from Pinterest\n"
-                    f"Creator: {creator}"
-                )
+                caption="𝚾𝛆𝛐𝛈𝚳𝛐𝛛𝐳"
             )
 
         except Exception as e:

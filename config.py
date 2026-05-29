@@ -22,13 +22,11 @@ BOT_START_TIME = time.time()
 COOKIES = os.environ.get("YOUTUBE_COOKIES", "")
 OWNER_NAME = os.environ.get("OWNER_NAME", "XeonModz")
 OWNER_URL = os.environ.get("OWNER_URL","https://xeonmodz-online.onrender.com")
-IMAGE_LINK = "https://i.ibb.co/wHnkzmd/temp.jpg"
+IMAGE_LINK = os.environ.get("IMAGE_LINK","https://i.ibb.co/wHnkzmd/temp.jpg")
+VIDEO_URL = os.environ.get("VIDEO_URL","https://your-default-video-url.mp4")
 OWNER_ID = int(os.environ.get("OWNER_ID", "7833143784"))
 
-MONGO_URL = os.environ.get(
-    "MONGO_URL",
-    "mongodb+srv://Xeon:XeonGamingYT@xeon.dig9eor.mongodb.net/myDatabase?retryWrites=true&w=majority&appName=Xeon"
-)
+MONGO_URL = os.environ.get("MONGO_URL","mongodb+srv://Xeon:XeonGamingYT@xeon.dig9eor.mongodb.net/myDatabase?retryWrites=true&w=majority&appName=Xeon")
 
 RENDER_EXTERNAL_URL = os.environ.get("RENDER_EXTERNAL_URL")
 
