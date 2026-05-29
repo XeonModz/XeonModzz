@@ -5,5 +5,5 @@
     TgCrypto
     requests
     pymongo 
-    yt-dlp==2026.5.25
+    yt-dlp
     pydub
