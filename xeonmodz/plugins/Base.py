@@ -10,7 +10,7 @@ from pyrogram.types import (
 
 from xeonmodz.lib.mode import isPrivate
 from xeonmodz import app
-from config import BOT_NAME, OWNER_NAME, OWNER_URL, OWNER_ID
+from config import BOT_NAME, OWNER_NAME, OWNER_URL, OWNER_ID, IMAGE_LINK
 
 
 def start_caption():
@@ -19,7 +19,7 @@ def start_caption():
         f"✨ Created by: {OWNER_NAME}\n\n"
         "🔹 I can be used as a base to build powerful bots.\n"
         "🔹 Fast, lightweight, and easy to customize.\n"
-        "🔥 Stay tuned for updates!\n\n"
+        "🔹 Stay tuned for updates!\n\n"
         f"🚀 Powered by {OWNER_NAME}"
     )
 
@@ -41,10 +41,22 @@ def start_buttons():
 @app.on_message(filters.command("start"))
 @isPrivate
 async def start(client, message):
-    await message.reply_text(
-        start_caption(),
-        reply_markup=start_buttons()
-    )
+
+    print(f"IMAGE_LINK = {IMAGE_LINK}")
+
+    try:
+        await message.reply_photo(
+            photo=IMAGE_LINK,
+            caption=start_caption(),
+            reply_markup=start_buttons()
+        )
+    except Exception as e:
+        print(f"PHOTO ERROR: {e}")
+
+        await message.reply_text(
+            start_caption(),
+            reply_markup=start_buttons()
+        )
 
 
 @app.on_message(filters.command(["menu", "help", "list"]))
