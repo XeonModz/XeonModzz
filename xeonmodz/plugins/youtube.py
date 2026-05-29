@@ -57,19 +57,12 @@ async def yt_audio_handler(client, message: Message):
     search_query = f"ytsearch:{query}" if not query.startswith("http") else query
 
     ydl_opts = {
-    'format': 'bestaudio/best',
-    'cookiefile': 'cookies.txt',
-    'outtmpl': os.path.join(DOWNLOAD_FOLDER, '%(title)s.%(ext)s'),
-    'quiet': True,
-    'http_headers': {
-        'User-Agent': 'Mozilla/5.0'
-    },
-    'postprocessors': [{
-        'key': 'FFmpegExtractAudio',
-        'preferredcodec': 'mp3',
-        'preferredquality': '192',
-    }],
-}
+        'format': 'bestaudio[ext=mp3]/bestaudio/best',
+        'cookiefile': 'cookies.txt',
+        'outtmpl': os.path.join(DOWNLOAD_FOLDER, '%(title)s.%(ext)s'),
+        'quiet': True,
+        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:94.0) Gecko/20100101 Firefox/94.0',
+    }
 
     try:
         status = await message.reply("🔍 Downloading audio...")
@@ -139,15 +132,12 @@ async def yt_video_handler(client, message: Message):
     search_query = f"ytsearch:{query}" if not query.startswith("http") else query
 
     ydl_opts = {
-    'format': '(bv*+ba/best)',
-    'merge_output_format': 'mp4',
-    'cookiefile': 'cookies.txt',
-    'outtmpl': os.path.join(DOWNLOAD_FOLDER, '%(title)s.%(ext)s'),
-    'quiet': True,
-    'http_headers': {
-        'User-Agent': 'Mozilla/5.0'
-    },
-}
+        'format': 'best[ext=mp4][height<=1080]/best[height<=1080]/best',
+        'cookiefile': 'cookies.txt',
+        'outtmpl': os.path.join(DOWNLOAD_FOLDER, '%(title)s.%(ext)s'),
+        'quiet': True,
+        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:94.0) Gecko/20100101 Firefox/94.0',
+    }
 
     try:
         status = await message.reply("🔍 Downloading video...")
