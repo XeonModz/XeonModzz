@@ -6,10 +6,8 @@ from pyrogram.types import (
     InlineKeyboardMarkup,
     InlineKeyboardButton,
     CallbackQuery,
-    InputMediaPhoto
 )
 
-from xeonmodz.lib.base import IMAGE_LINK
 from xeonmodz.lib.mode import isPrivate
 from xeonmodz import app
 from config import BOT_NAME, OWNER_NAME, OWNER_URL, OWNER_ID
@@ -43,9 +41,8 @@ def start_buttons():
 @app.on_message(filters.command("start"))
 @isPrivate
 async def start(client, message):
-    await message.reply_photo(
-        photo=IMAGE_LINK,
-        caption=start_caption(),
+    await message.reply_text(
+        start_caption(),
         reply_markup=start_buttons()
     )
 
@@ -90,9 +87,8 @@ async def menu(client, message):
     for cmd, desc in commands.items():
         text += f"➤ {cmd} - {desc}\n"
 
-    await message.reply_photo(
-        photo=IMAGE_LINK,
-        caption=text,
+    await message.reply_text(
+        text,
         reply_markup=InlineKeyboardMarkup(
             [[InlineKeyboardButton("⬅️ Back", callback_data="back_to_start")]]
         )
@@ -104,56 +100,41 @@ async def cb_handler(client, query: CallbackQuery):
     await query.answer()
 
     if query.data == "about":
-        await query.message.edit_caption(
-            caption=(
-                f"🤖 {BOT_NAME}\n\n"
-                f"Creator: {OWNER_NAME}\n"
-                f"Library: Pyrogram {__version__}"
-            ),
+        await query.message.edit_text(
+            f"🤖 {BOT_NAME}\n\n"
+            f"Creator: {OWNER_NAME}\n"
+            f"Library: Pyrogram {__version__}",
             reply_markup=InlineKeyboardMarkup(
                 [[InlineKeyboardButton("⬅️ Back", callback_data="back_to_start")]]
             )
         )
 
     elif query.data == "owner_info":
-        await query.message.edit_caption(
-            caption=(
-                f"👤 Owner: {OWNER_NAME}\n"
-                f"ID: {OWNER_ID}\n"
-                f"URL: {OWNER_URL}"
-            ),
+        await query.message.edit_text(
+            f"👤 Owner: {OWNER_NAME}\n"
+            f"ID: {OWNER_ID}\n"
+            f"URL: {OWNER_URL}",
             reply_markup=InlineKeyboardMarkup(
                 [[InlineKeyboardButton("⬅️ Back", callback_data="back_to_start")]]
             )
         )
 
     elif query.data == "menu":
-        text = (
-            f"❍⊷══〘{BOT_NAME}〙══⊷❍\n\n"
+        await query.message.edit_text(
             "🕊️ Available Commands:\n\n"
             "➤ /start\n"
             "➤ /menu\n"
             "➤ /help\n"
             "➤ /list\n"
-            "➤ /ping"
-        )
-
-        await query.message.edit_media(
-            media=InputMediaPhoto(
-                media=IMAGE_LINK,
-                caption=text
-            ),
+            "➤ /ping",
             reply_markup=InlineKeyboardMarkup(
                 [[InlineKeyboardButton("⬅️ Back", callback_data="back_to_start")]]
             )
         )
 
     elif query.data == "back_to_start":
-        await query.message.edit_media(
-            media=InputMediaPhoto(
-                media=IMAGE_LINK,
-                caption=start_caption()
-            ),
+        await query.message.edit_text(
+            start_caption(),
             reply_markup=start_buttons()
         )
 
