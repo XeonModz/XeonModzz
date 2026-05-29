@@ -5,7 +5,7 @@ from pyrogram import filters, __version__
 from pyrogram.types import (
     InlineKeyboardMarkup,
     InlineKeyboardButton,
-    CallbackQuery,
+    CallbackQuery
 )
 
 from xeonmodz.lib.mode import isPrivate
@@ -139,3 +139,4 @@ async def cb_handler(client, query: CallbackQuery):
         )
 
 logging.info("Menu plugin loaded successfully")
+print("BASE PLUGIN LOADED")
