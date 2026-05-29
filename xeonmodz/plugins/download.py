@@ -9,11 +9,6 @@ import requests
 @isPrivate
 async def insta_downloader(client, message):
 
-    try:
-        await message.react("⚡")
-    except Exception:
-        pass
-
     if len(message.command) < 2:
         return await message.reply_text(
             "Usage:\n/insta instagram_url"
@@ -46,14 +41,14 @@ async def insta_downloader(client, message):
 
             await message.reply_video(
                 video=media,
-                caption="𝚾𝛆𝛐𝛈𝚳𝛐𝛛𝐳"
+                caption="XeonModz"
             )
 
         elif media_type == "image":
 
             await message.reply_photo(
                 photo=media,
-                caption="𝚾𝛆𝛐𝛈𝚳𝛐𝛛𝐳"
+                caption="XeonModz"
             )
 
         else:
@@ -65,7 +60,7 @@ async def insta_downloader(client, message):
     except Exception as e:
 
         await message.reply_text(
-            f"Error:\n{e}"
+            f"Instagram Error:\n{e}"
         )
 
 
@@ -73,11 +68,6 @@ async def insta_downloader(client, message):
 @app.on_message(filters.command("pin"))
 @isPrivate
 async def pinterest_downloader(client, message):
-
-    try:
-        await message.react("⚡")
-    except Exception:
-        pass
 
     if len(message.command) < 2:
         return await message.reply_text(
@@ -111,18 +101,6 @@ async def pinterest_downloader(client, message):
         and vid.startswith("http")
     ]
 
-    for vid in videos:
-
-        try:
-
-            await message.reply_video(
-                video=vid,
-                caption="𝚾𝛆𝛐𝛈𝚳𝛐𝛛𝐳"
-            )
-
-        except Exception:
-            pass
-
     images = [
         img for img in data.get("images", [])
         if isinstance(img, str)
@@ -130,20 +108,30 @@ async def pinterest_downloader(client, message):
         and ".png)}" not in img
     ]
 
-    for img in images:
+    try:
 
-        try:
+        for vid in videos:
+
+            await message.reply_video(
+                video=vid,
+                caption="XeonModz"
+            )
+
+        for img in images:
 
             await message.reply_photo(
                 photo=img,
-                caption="𝚾𝛆𝛐𝛈𝚳𝛐𝛛𝐳"
+                caption="XeonModz"
             )
 
-        except Exception:
-            pass
+        if not videos and not images:
 
-    if not videos and not images:
+            await message.reply_text(
+                "No media found."
+            )
+
+    except Exception as e:
 
         await message.reply_text(
-            "No media found."
+            f"Pinterest Error:\n{e}"
         )
