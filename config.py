@@ -26,6 +26,7 @@ IMAGE_LINK = os.environ.get("IMAGE_LINK","https://i.ibb.co/wHnkzmd/temp.jpg")
 VIDEO_URL = os.environ.get("VIDEO_URL","https://your-default-video-url.mp4")
 OWNER_ID = int(os.environ.get("OWNER_ID", "7833143784"))
 REMOVE_BG_API= os.environ.get("REMOVE_BG_API", "yKShpnfXsPmLuSdE7tCZpECN")
+IMGBB_API_KEY = os.environ.get("IMGBB_API_KEY", "dca13c2964fb813e7d8edc2057290021")
 
 MONGO_URL = os.environ.get("MONGO_URL","mongodb+srv://Xeon:XeonGamingYT@xeon.dig9eor.mongodb.net/myDatabase?retryWrites=true&w=majority&appName=Xeon")
 
