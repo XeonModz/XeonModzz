@@ -7,3 +7,4 @@
     pymongo 
     yt-dlp
     pydub
+    aiohttp 
