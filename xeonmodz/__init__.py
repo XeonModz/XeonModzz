@@ -1,7 +1,9 @@
 # Version: 1.0 Beta
-# ©️ 2021 XeonModz ALL RIGHTS RESERVED
+# ©️ 2025 XeonModz ALL RIGHTS RESERVED
+
 from pyrogram import Client
 from pymongo import MongoClient
+
 from config import (
     API_ID,
     API_HASH,
@@ -9,29 +11,46 @@ from config import (
     MONGO_URL,
 )
 
-
-
-# Connect to MongoDB for accessing plugin database
+# MongoDB
 client = MongoClient(MONGO_URL)
-db = client['plugin']
-plugindb = db['plugindb']
+
+db = client["plugin"]
+
+plugindb = db["plugindb"]
 
 
-# Install plugins from database if any exists
 def plugins():
+
     pl = plugindb.find()
+
     for m in pl:
+
         try:
-            exec(m["url"], globals())
-            print(f"Successfully installed: {m['name']}")
-        except:
-            print("an error")
+
+            exec(
+                m["url"],
+                globals()
+            )
+
+            print(
+                f"Successfully installed: "
+                f"{m['name']}"
+            )
+
+        except Exception as e:
+
+            print(
+                f"Plugin Error "
+                f"{m['name']}: {e}"
+            )
+
 
 app = Client(
     "xeonmodz-basebot",
-    bot_token=BOT_TOKEN,
     api_id=API_ID,
     api_hash=API_HASH,
-    plugins=dict(root="xeonmodz"), 
+    bot_token=BOT_TOKEN,
+    plugins=dict(
+        root="xeonmodz.plugins"
+    ),
 )
-
