@@ -80,7 +80,7 @@ async def menu(client, message):
         "/shell": "Run shell commands",
         "/insta": "Instagram downloader",
         "/teradl": "Terabox downloader",
-        "/pinterest": "Pinterest downloader",
+        "/pin": "Pinterest downloader",
         "/upload": "Image uploader",
         "/fancy": "Fancy text generator",
         "/img": "Search images",
@@ -88,7 +88,11 @@ async def menu(client, message):
         "/gpp": "Update group picture",
         "/install": "Install plugins",
         "/uninstall": "Uninstall plugins",
-        "/allplug": "Show all plugins"
+        "/url": "convert to urls image/video/audio",
+        "/fb": "Facebook downloader",
+        "/ginfo": "Show the group pp with details",
+        "/tagall": "tag all members in group",
+        "/removebg": "Remove Background of image"
     }
 
     text = f"❍⊷══〘{BOT_NAME}〙══⊷❍\n\n🕊️ Available Commands:\n\n"
