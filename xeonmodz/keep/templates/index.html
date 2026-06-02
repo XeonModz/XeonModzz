@@ -1,107 +1,144 @@
 <!DOCTYPE html>
-<html lang="ja">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>𝚾𝛆𝛐𝛈𝚳𝛐𝛛𝐳</title>
-    <meta name="theme-color" content="#000000" />
-    <meta name="description" content="Nothing Here" />
-    <meta name="theme-color" content="#06c1db">
-    <link rel="icon" href="" type="image/x-icon" />
-    <style>
-      body {
-        margin: 0;
-        padding: 0;
-        background: #000;
-        display: flex;
-        flex-direction: column;
-        min-height: 100vh;
-        font-family: Arial, sans-serif;
-      }
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>𝚾𝛆𝛐𝛈𝚳𝛐𝛛𝐳</title>
 
-      .container {
-        flex: 1;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 20px;
-        text-align: center;
-        flex-direction: column;
-      }
+<meta name="theme-color" content="#06c1db">
+<meta name="description" content="Nothing Here">
 
-      h1 {
-        color: #fff;
-        font-size: 8vw;
-        margin: 0;
-        word-break: break-word;
-      }
-      .issue {
-        color: #ccc;
-        margin-top: 15px;
-        font-size: 10px;
-      }
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-      .issue a {
-        color: #00f0ff;
-        text-decoration: none;
-        font-weight: bold;
-        margin-left: 5px;
-      }
+body {
+    background: #000;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
 
-      .issue a:hover {
-        text-decoration: underline;
-      }
+.container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 20px;
+    text-align: center;
+}
 
+h1 {
+    font-size: clamp(40px, 8vw, 90px);
+    color: #fff;
+    margin-bottom: 10px;
+}
 
-      .description {
-        color: #aaa;
-        font-size: 1.5vw;
-        margin-top: 10px;
-      }
+.description {
+    color: #888;
+    margin-bottom: 25px;
+}
 
-      footer {
-        text-align: center;
-        color: white;
-        padding: 10px 0;
-        font-size: 14px;
-      }
+.stats {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 20px;
+}
 
-      @media (max-width: 768px) {
-        h1 {
-          font-size: 10vw;
-        }
-        .description {
-          font-size: 3vw;
-        }
-      }
+.card {
+    background: #111;
+    border: 1px solid #06c1db;
+    border-radius: 15px;
+    padding: 20px;
+    min-width: 250px;
+    box-shadow: 0 0 15px rgba(6, 193, 219, 0.25);
+}
 
-      @media (max-width: 480px) {
-        h1 {
-          font-size: 12vw;
-        }
-        .description {
-          font-size: 4vw;
-        }
-      }
+.card h3 {
+    color: #06c1db;
+    margin-bottom: 10px;
+    font-size: 16px;
+}
 
-      
-    </style>
-  </head>
-  <body>
-    <div class="container">
-      <div class="flame">
-        <h1><span>𝚾𝛆𝛐𝛈𝚳𝛐𝛛𝐳</span></h1>
-          <div class="issue">
-            <span>Having issue?</span>
-            <a href="https://xeonmodz-online.onrender.com" target="_blank">View Tutorial</a>
-            <p><strong>OS BOOT TIME:</strong> {{ os_uptime }}</p>
-            <p><strong>Uptime:</strong> {{ uptime }}</p>
+.card p {
+    color: #fff;
+    font-size: 15px;
+    word-break: break-word;
+}
 
-          </div>
-      </div>
+.issue {
+    margin-top: 20px;
+    color: #aaa;
+    font-size: 14px;
+}
+
+.issue a {
+    color: #06c1db;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.issue a:hover {
+    text-decoration: underline;
+}
+
+footer {
+    text-align: center;
+    padding: 15px;
+    color: #888;
+    border-top: 1px solid #111;
+}
+
+@media(max-width:768px) {
+    .card {
+        min-width: 100%;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>𝚾𝛆𝛐𝛈𝚳𝛐𝛛𝐳</h1>
+
+    <p class="description">API Server Online</p>
+
+    <div class="stats">
+
+        <div class="card">
+            <h3> OS BOOT TIME </h3>
+            <p>{{ os_uptime }}</p>
+        </div>
+
+        <div class="card">
+            <h3> SERVER UPTIME </h3>
+            <p>{{ uptime }}</p>
+        </div>
+
     </div>
-    <footer>
-      &copy; 2025 𝚾𝛆𝛐𝛈𝚳𝛐𝛛𝐳
-    </footer>
-  </body>
+
+    <div class="issue">
+        Having issue?
+        <a href="https://xeonmodz-online.onrender.com" target="_blank">
+            Will Fix Soon
+        </a>
+    </div>
+
+</div>
+
+<footer>
+    © 2026 𝚾𝛆𝛐𝛈𝚳𝛐𝛛𝐳
+</footer>
+
+</body>
 </html>
