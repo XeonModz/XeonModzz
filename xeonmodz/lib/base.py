@@ -72,7 +72,7 @@ async def uzumaki():
         f"**┃{star}│➥Python:** 3.9.6\n"
         f"**┃{star}│➥Library:** Pyrogram\n"
         f"**┃{star}│➥Database:** MongoDB\n"
-        f"**┃{star}│➥Developer:** [XEON](https://alosious-benny.vercel.app)\n"
+        f"**┃{star}│➥Developer:** [XEON](vercel.app)\n"
         f"**╰═════════════════⊷**\n\n"
         f"**╭══════⊷❍**\n"
         f"**┃{star}│MODE:** {MODE}\n"
@@ -92,7 +92,7 @@ async def uzumaki():
 # Useless function :)
 def satorugojo():
     try:
-        image_url = "https://xeonmodz-online.onrender.com/Satoru-Gojo"
+        image_url = "https://i.ibb.co/KpT0ZBHk/photo-2026-06-02-06-07-00-7646675704108548120.jpg"
         response = requests.get(image_url)
 
         if response.status_code == 200:
