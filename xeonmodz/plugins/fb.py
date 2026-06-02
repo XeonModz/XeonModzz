@@ -9,14 +9,17 @@ import requests
 @isPrivate
 async def facebook_dl(_, message):
 
+    try:
+        await message.react("⚡")
+    except Exception:
+        pass
+
     if len(message.command) < 2:
         return await message.reply_text(
             "Usage:\n/fb <facebook_url>"
         )
 
     fb_url = message.command[1]
-
-    msg = await message.reply_text("⏳ Fetching Facebook video...")
 
     try:
         r = requests.get(
@@ -26,23 +29,21 @@ async def facebook_dl(_, message):
         )
 
         if r.status_code != 200:
-            return await msg.edit_text(
+            return await message.reply_text(
                 f"❌ API Error\nHTTP {r.status_code}"
             )
 
         try:
             data = r.json()
         except Exception:
-            return await msg.edit_text(
+            return await message.reply_text(
                 "❌ Invalid API Response"
             )
 
         if not data.get("success"):
-            return await msg.edit_text(
+            return await message.reply_text(
                 "❌ Failed to fetch Facebook video."
             )
-
-        title = data.get("title", "Facebook Video")
 
         video_url = (
             data.get("videos", {})
@@ -58,19 +59,21 @@ async def facebook_dl(_, message):
             )
 
         if not video_url:
-            return await msg.edit_text(
+            return await message.reply_text(
                 "❌ No video URL found."
             )
 
         await message.reply_video(
             video=video_url,
-            caption=f"🎬 {title}\n\n𝚾𝛆𝛐𝛈𝚳𝛐𝛛𝐳"
+            caption="𝚾𝛆𝛐𝛈𝚳𝛐𝛛𝐳"
         )
 
-        await msg.delete()
-
     except requests.exceptions.Timeout:
-        await msg.edit_text("❌ API Timeout")
+        await message.reply_text(
+            "❌ API Timeout"
+        )
 
     except Exception as e:
-        await msg.edit_text(f"❌ Error:\n{e}")
+        await message.reply_text(
+            f"❌ Error:\n{e}"
+        )
