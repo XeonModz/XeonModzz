@@ -10,6 +10,8 @@ else:
     db_name = "xeonmodz"
 db = client[db_name]
 
+usersdb = db["users"]
+
 def save_yt_cookies(data: str):
     db.yt_cookies.update_one({}, {"$set": {"cookies": data}}, upsert=True)
 

@@ -1,6 +1,9 @@
 # Version: 1.0 Beta
 # ©️ 2025 xeonmodz ALL RIGHTS RESERVED
 from xeonmodz.keep import web 
+from xeonmodz.lib.mongo import usersdb
+from pyrogram import filters
+from xeonmodz import app
 from xeonmodz import app, plugindb 
 from config import RENDER_EXTERNAL_URL
 from xeonmodz.lib.base import strt_msgs , uzumaki
@@ -38,3 +41,20 @@ if __name__ == "__main__":
 
     loop = asyncio.get_event_loop()
     loop.run_until_complete(main())          
+
+
+@app.on_message(filters.private)
+async def save_user(client, message):
+
+    if not message.from_user:
+        return
+
+    usersdb.update_one(
+        {"user_id": message.from_user.id},
+        {
+            "$set": {
+                "name": message.from_user.first_name
+            }
+        },
+        upsert=True
+    )
