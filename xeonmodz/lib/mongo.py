@@ -12,6 +12,18 @@ db = client[db_name]
 
 usersdb = db["users"]
 
+def save_alive(text):
+    db.alive.update_one(
+        {},
+        {"$set": {"text": text}},
+        upsert=True
+    )
+
+def get_alive():
+    data = db.alive.find_one({})
+    return data.get("text") if data else None
+
+
 def save_yt_cookies(data: str):
     db.yt_cookies.update_one({}, {"$set": {"cookies": data}}, upsert=True)
 
