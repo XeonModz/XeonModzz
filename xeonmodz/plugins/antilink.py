@@ -35,7 +35,10 @@ async def antilink_toggle(client, message):
 
     if len(message.command) != 2:
         return await message.reply_text(
-            "Usage:\n/antilink on\n/antilink off"
+            "Usage:\n"
+            "/antilink on\n"
+            "/antilink off\n"
+            "/antilink status"
         )
 
     mode = message.command[1].lower()
@@ -44,17 +47,31 @@ async def antilink_toggle(client, message):
 
         ENABLED_CHATS.add(message.chat.id)
 
-        await message.reply_text(
-            "✅ AntiLink Enabled"
+        return await message.reply_text(
+            "🔒 AntiLink Enabled"
         )
 
     elif mode == "off":
 
         ENABLED_CHATS.discard(message.chat.id)
 
-        await message.reply_text(
-            "❌ AntiLink Disabled"
+        return await message.reply_text(
+            "🔓 AntiLink Disabled"
         )
+
+    elif mode == "status":
+
+        if message.chat.id in ENABLED_CHATS:
+
+            return await message.reply_text(
+                "🔒 AntiLink Status: ENABLED"
+            )
+
+        else:
+
+            return await message.reply_text(
+                "🔓 AntiLink Status: DISABLED"
+            )
 
 
 @app.on_message(filters.group & filters.text, group=100)
@@ -66,7 +83,7 @@ async def anti_link_checker(client, message):
     if not message.from_user:
         return
 
-    # Allow admins and owner
+    # Allow owner/admins
     try:
 
         member = await client.get_chat_member(
@@ -93,17 +110,19 @@ async def anti_link_checker(client, message):
 
     # Delete forwarded messages
     if (
-        message.forward_from
-        or message.forward_from_chat
-        or message.forward_sender_name
+        getattr(message, "forward_from", None)
+        or getattr(message, "forward_from_chat", None)
+        or getattr(message, "forward_sender_name", None)
     ):
+
         try:
             await message.delete()
         except:
             pass
+
         return
 
-    # Delete links/domains
+    # Delete links/domains/subdomains
     if LINK_REGEX.search(text):
 
         try:
