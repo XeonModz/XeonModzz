@@ -1,18 +1,19 @@
 from pyrogram import filters
-from xeonmodz import app
 from pymongo import MongoClient
+from xeonmodz import app
 from config import MONGO_URL
 import re
 
 mongo = MongoClient(MONGO_URL)
 
 db = mongo["XeonModz"]
-antilink_db = db["antilink"]
+collection = db["antilink"]
 
 LINK_REGEX = re.compile(
     r"("
     r"https?://\S+|"
     r"www\.\S+|"
+    r"(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}|"
     r"t\.me/\S+|"
     r"telegram\.me/\S+|"
     r"telegram\.dog/\S+|"
@@ -20,15 +21,15 @@ LINK_REGEX = re.compile(
     r"discord\.com/invite/\S+|"
     r"bit\.ly/\S+|"
     r"tinyurl\.com/\S+|"
-    r"[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(/[^\s]*)?|"
-    r"@[a-zA-Z0-9_]{5,}"
+    r"goo\.gl/\S+|"
+    r"@\w+"
     r")",
     re.IGNORECASE
 )
 
 
-def is_enabled(chat_id):
-    return antilink_db.find_one(
+def enabled(chat_id):
+    return collection.find_one(
         {"chat_id": chat_id}
     ) is not None
 
@@ -36,51 +37,47 @@ def is_enabled(chat_id):
 @app.on_message(filters.command("antilink") & filters.group)
 async def antilink_toggle(client, message):
 
-    member = await client.get_chat_member(
-        message.chat.id,
-        message.from_user.id
-    )
+    try:
+        member = await client.get_chat_member(
+            message.chat.id,
+            message.from_user.id
+        )
 
-    if member.status not in ["creator", "administrator"]:
+        if member.status not in [
+            "creator",
+            "administrator"
+        ]:
+            return
+
+    except:
         return
 
-    if len(message.command) != 2:
-
+    if len(message.command) < 2:
         return await message.reply_text(
             "Usage:\n"
             "/antilink on\n"
             "/antilink off"
         )
 
-    mode = message.command[1].lower()
+    option = message.command[1].lower()
 
-    if mode == "on":
+    if option == "on":
 
-        antilink_db.update_one(
+        collection.update_one(
             {"chat_id": message.chat.id},
             {"$set": {"chat_id": message.chat.id}},
             upsert=True
         )
 
-        try:
-            await message.react("✅")
-        except:
-            pass
-
         await message.reply_text(
             "🔒 AntiLink Enabled"
         )
 
-    elif mode == "off":
+    elif option == "off":
 
-        antilink_db.delete_one(
+        collection.delete_one(
             {"chat_id": message.chat.id}
         )
-
-        try:
-            await message.react("❌")
-        except:
-            pass
 
         await message.reply_text(
             "🔓 AntiLink Disabled"
@@ -90,13 +87,13 @@ async def antilink_toggle(client, message):
 @app.on_message(filters.group, group=100)
 async def anti_link_checker(client, message):
 
-    if not is_enabled(message.chat.id):
+    if not enabled(message.chat.id):
         return
 
     if not message.from_user:
         return
 
-    # allow admins
+    # Admin bypass
     try:
 
         member = await client.get_chat_member(
@@ -113,39 +110,45 @@ async def anti_link_checker(client, message):
     except:
         return
 
+    # Block forwarded messages
+    if (
+        message.forward_from_chat
+        or message.forward_sender_name
+        or message.forward_from
+    ):
+        try:
+            await message.delete()
+        except:
+            pass
+        return
+
     text = (
         message.text
         or message.caption
         or ""
     )
 
-    if not text:
-        return
-
-    if text.startswith("/"):
-        return
-
     found = False
 
-    # Telegram entities
+    # Hidden telegram links
     if message.entities:
-
         for entity in message.entities:
 
-            if str(entity.type).lower() in [
-                "url",
-                "text_link",
-                "mention"
-            ]:
+            etype = str(entity.type).lower()
+
+            if (
+                "url" in etype
+                or "text_link" in etype
+                or "mention" in etype
+            ):
                 found = True
                 break
 
-    # Regex detection
+    # Regex links/domains
     if LINK_REGEX.search(text):
         found = True
 
     if found:
-
         try:
             await message.delete()
         except:
