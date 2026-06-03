@@ -65,11 +65,6 @@ async def antibot_toggle(client, message):
 
     elif mode == "status":
 
-        try:
-            await message.react("ℹ️")
-        except:
-            pass
-
         if message.chat.id in ANTI_BOT:
 
             await message.reply_text(
@@ -81,6 +76,51 @@ async def antibot_toggle(client, message):
             await message.reply_text(
                 "🤖 AntiBot Status: DISABLED"
             )
+
+
+@app.on_message(filters.command("resetwarn") & filters.group)
+async def resetwarn(client, message):
+
+    try:
+        member = await client.get_chat_member(
+            message.chat.id,
+            message.from_user.id
+        )
+
+        status = str(member.status).lower()
+
+        if (
+            "administrator" not in status
+            and "creator" not in status
+            and "owner" not in status
+        ):
+            return
+
+    except:
+        return
+
+    if not message.reply_to_message:
+        return await message.reply_text(
+            "Reply to a user with /resetwarn"
+        )
+
+    user = message.reply_to_message.from_user
+
+    key = (
+        message.chat.id,
+        user.id
+    )
+
+    WARNINGS.pop(key, None)
+
+    try:
+        await message.react("♻️")
+    except:
+        pass
+
+    await message.reply_text(
+        f"♻️ Warnings reset for {user.mention}"
+    )
 
 
 @app.on_message(filters.group & filters.new_chat_members, group=100)
@@ -96,7 +136,6 @@ async def antibot_checker(client, message):
     if not adder:
         return
 
-    # Ignore admins
     try:
 
         admin = await client.get_chat_member(
@@ -126,17 +165,6 @@ async def antibot_checker(client, message):
 
         try:
 
-            # Remove added bot
-            await client.ban_chat_member(
-                message.chat.id,
-                member.id
-            )
-
-            await client.unban_chat_member(
-                message.chat.id,
-                member.id
-            )
-
             key = (
                 message.chat.id,
                 adder.id
@@ -149,32 +177,36 @@ async def antibot_checker(client, message):
 
             warns = WARNINGS[key]
 
+            warn_msg = await message.reply_text(
+                f"⚠️ Warning\n\n"
+                f"{adder.mention} added a bot.\n"
+                f"Warnings: {warns}/3\n\n"
+                f"Bot: {member.first_name}"
+            )
+
             try:
                 await message.react("⚠️")
             except:
                 pass
 
-            warn_msg = await message.reply_text(
-                f"⚠️ Warning\n\n"
-                f"{adder.mention} added a bot.\n"
-                f"Warnings: {warns}/3\n\n"
-                f"Removed Bot: {member.first_name}"
+            await asyncio.sleep(2)
+
+            await client.ban_chat_member(
+                message.chat.id,
+                member.id
             )
 
-            await asyncio.sleep(5)
+            await client.unban_chat_member(
+                message.chat.id,
+                member.id
+            )
 
-            try:
-                await warn_msg.delete()
-            except:
-                pass
-
-            # Kick user after 3 warnings
             if warns >= 3:
 
                 kick_msg = await message.reply_text(
                     f"🚫 {adder.mention}\n\n"
-                    f"Maximum warnings reached.\n"
-                    f"Removing user..."
+                    f"Reached 3 warnings.\n"
+                    f"User removed."
                 )
 
                 await client.ban_chat_member(
@@ -197,14 +229,5 @@ async def antibot_checker(client, message):
                 except:
                     pass
 
-                await asyncio.sleep(5)
-
-                try:
-                    await kick_msg.delete()
-                except:
-                    pass
-
         except Exception as e:
-            print(
-                f"AntiBot Error: {e}"
-            )
+            print(f"AntiBot Error: {e}")
