@@ -30,3 +30,53 @@ def save_yt_cookies(data: str):
 def get_yt_cookies() -> str:
     doc = db.yt_cookies.find_one({})
     return doc["cookies"] if doc and "cookies" in doc else None
+
+
+# AntiLink
+
+def enable_antilink(chat_id):
+    db.group_settings.update_one(
+        {"chat_id": chat_id},
+        {"$set": {"antilink": True}},
+        upsert=True
+    )
+
+def disable_antilink(chat_id):
+    db.group_settings.update_one(
+        {"chat_id": chat_id},
+        {"$set": {"antilink": False}},
+        upsert=True
+    )
+
+def is_antilink(chat_id):
+    data = db.group_settings.find_one(
+        {"chat_id": chat_id}
+    )
+    return bool(
+        data and data.get("antilink")
+    )
+
+
+# AntiBot
+
+def enable_antibot(chat_id):
+    db.group_settings.update_one(
+        {"chat_id": chat_id},
+        {"$set": {"antibot": True}},
+        upsert=True
+    )
+
+def disable_antibot(chat_id):
+    db.group_settings.update_one(
+        {"chat_id": chat_id},
+        {"$set": {"antibot": False}},
+        upsert=True
+    )
+
+def is_antibot(chat_id):
+    data = db.group_settings.find_one(
+        {"chat_id": chat_id}
+    )
+    return bool(
+        data and data.get("antibot")
+    )

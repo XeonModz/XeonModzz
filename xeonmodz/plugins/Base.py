@@ -92,7 +92,9 @@ async def menu(client, message):
         "/fb": "Facebook downloader",
         "/ginfo": "Show the group pp with details",
         "/tagall": "tag all members in group",
-        "/removebg": "Remove Background of image"
+        "/removebg": "Remove Background of image",
+        "/antibot": "Remove all bots",
+        "/antilink": "Remove all links"
     }
 
     text = f"❍⊷══〘{BOT_NAME}〙══⊷❍\n\n🕊️ Available Commands:\n\n"
