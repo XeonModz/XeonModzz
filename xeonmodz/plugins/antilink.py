@@ -15,6 +15,24 @@ print("ANTILINK PLUGIN LOADED")
 @app.on_message(filters.command("antilink") & filters.group)
 async def antilink_toggle(client, message):
 
+    try:
+        member = await client.get_chat_member(
+            message.chat.id,
+            message.from_user.id
+        )
+
+        status = str(member.status).lower()
+
+        if (
+            "administrator" not in status
+            and "creator" not in status
+            and "owner" not in status
+        ):
+            return
+
+    except:
+        return
+
     if len(message.command) != 2:
         return await message.reply_text(
             "Usage:\n/antilink on\n/antilink off"
@@ -26,7 +44,7 @@ async def antilink_toggle(client, message):
 
         ENABLED_CHATS.add(message.chat.id)
 
-        return await message.reply_text(
+        await message.reply_text(
             "✅ AntiLink Enabled"
         )
 
@@ -34,7 +52,7 @@ async def antilink_toggle(client, message):
 
         ENABLED_CHATS.discard(message.chat.id)
 
-        return await message.reply_text(
+        await message.reply_text(
             "❌ AntiLink Disabled"
         )
 
@@ -48,7 +66,7 @@ async def anti_link_checker(client, message):
     if not message.from_user:
         return
 
-    # Allow admins
+    # Allow admins and owner
     try:
 
         member = await client.get_chat_member(
@@ -56,10 +74,13 @@ async def anti_link_checker(client, message):
             message.from_user.id
         )
 
-        if member.status in [
-            "administrator",
-            "creator"
-        ]:
+        status = str(member.status).lower()
+
+        if (
+            "administrator" in status
+            or "creator" in status
+            or "owner" in status
+        ):
             return
 
     except:
@@ -70,21 +91,19 @@ async def anti_link_checker(client, message):
     if text.startswith("/"):
         return
 
-    # Forwarded message block
+    # Delete forwarded messages
     if (
         message.forward_from
         or message.forward_from_chat
         or message.forward_sender_name
     ):
-
         try:
             await message.delete()
         except:
             pass
-
         return
 
-    # Link block
+    # Delete links/domains
     if LINK_REGEX.search(text):
 
         try:
