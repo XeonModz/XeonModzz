@@ -94,7 +94,10 @@ async def menu(client, message):
         "/tagall": "tag all members in group",
         "/removebg": "Remove Background of image",
         "/antibot": "Remove all bots",
-        "/antilink": "Remove all links"
+        "/antilink": "Remove all links",
+        "/sticker": "Convert Image to Sticker",
+        "/crop": "Crop Image to PDF 512x512",
+        "/unzip": "Unzip the zip/video",
     }
 
     text = f"❍⊷══〘{BOT_NAME}〙══⊷❍\n\n🕊️ Available Commands:\n\n"
