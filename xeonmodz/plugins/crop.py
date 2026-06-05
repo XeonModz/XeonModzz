@@ -1,4 +1,4 @@
-/eval from pyrogram import filters
+from pyrogram import filters
 from xeonmodz import app
 from xeonmodz.lib.mode import isPrivate
 from PIL import Image
