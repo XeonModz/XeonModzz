@@ -1,67 +1,85 @@
-from pyrogram import Client, filters
-from pyrogram.types import Message
+from pyrogram import filters
 from xeonmodz import app
 from xeonmodz.lib.mode import isPrivate
+from PIL import Image
 import os
 
+os.makedirs("downloads", exist_ok=True)
 
-@app.on_message(filters.command("stickid"))
+@app.on_message(filters.command(["crop512", "c512"]) & filters.reply)
 @isPrivate
-async def sticker_id(client: Client, message: Message):
-    if not message.reply_to_message:
-        return await message.reply("Reply to a sticker.")
+async def crop_512(client, message):
 
-    reply = message.reply_to_message
-
-    if not reply.sticker:
-        return await message.reply("That's not a sticker. Reply to a sticker.")
-
-    await message.reply(
-        f"🌒 Sticker ID:\n`{reply.sticker.file_id}`"
-    )
-
-
-@app.on_message(filters.command("sticker"))
-@isPrivate
-async def image_to_sticker(client: Client, message: Message):
-    replied = message.reply_to_message
-
-    if not replied:
-        return await message.reply(
-            "Reply to an image with /sticker"
-        )
-
-    if not (replied.photo or replied.document):
-        return await message.reply(
-            "Reply to an image with /sticker"
-        )
-
-    status = await message.reply("⏳ Creating sticker...")
-
-    file_path = None
-    sticker_path = "sticker.webp"
+    status = await message.reply_text("✂️ Cropping to 512x512...")
 
     try:
-        file_path = await replied.download()
 
-        os.system(
-            f'ffmpeg -i "{file_path}" '
-            f'-vf "scale=512:512:force_original_aspect_ratio=decrease" '
-            f'"{sticker_path}" -y > /dev/null 2>&1'
+        reply = message.reply_to_message
+
+        if reply.photo:
+            file_path = await reply.download(
+                file_name=f"downloads/photo_{message.id}.jpg"
+            )
+
+        elif reply.sticker:
+            file_path = await reply.download(
+                file_name=f"downloads/sticker_{message.id}.webp"
+            )
+
+        elif reply.document:
+            file_path = await reply.download(
+                file_name=f"downloads/file_{message.id}"
+            )
+
+        else:
+            return await status.edit(
+                "❌ Reply to an image or sticker."
+            )
+
+        img = Image.open(file_path).convert("RGBA")
+
+        width, height = img.size
+
+        # Crop to square from center
+        side = min(width, height)
+
+        left = (width - side) // 2
+        top = (height - side) // 2
+        right = left + side
+        bottom = top + side
+
+        img = img.crop(
+            (left, top, right, bottom)
         )
 
-        await message.reply_sticker(sticker_path)
+        # Resize cropped square to 512x512
+        img = img.resize(
+            (512, 512),
+            Image.Resampling.LANCZOS
+        )
+
+        output = f"downloads/crop512_{message.id}.png"
+
+        img.save(
+            output,
+            format="PNG"
+        )
+
+        await message.reply_document(
+            output,
+            caption="✅ Cropped to 512×512"
+        )
+
         await status.delete()
 
-    except Exception as e:
-        await status.edit(f"❌ Error:\n`{e}`")
-
-    finally:
-        if file_path and os.path.exists(file_path):
+        try:
             os.remove(file_path)
+            os.remove(output)
+        except:
+            pass
 
-        if os.path.exists(sticker_path):
-            os.remove(sticker_path)
+    except Exception as e:
 
-
-
+        await status.edit(
+            f"❌ Error:\n{e}"
+        )
