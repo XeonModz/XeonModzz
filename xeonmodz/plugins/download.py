@@ -3,7 +3,7 @@ from xeonmodz import app
 from xeonmodz.lib.mode import isPrivate
 import requests
 
-API_BASE = "https://xeon-api.koyeb.app"
+API_BASE = "https://xeon-apis.onrender.com"
 
 CAPTION = "𝚾𝛆𝛐𝛈𝚳𝛐𝛛𝐳"
 
