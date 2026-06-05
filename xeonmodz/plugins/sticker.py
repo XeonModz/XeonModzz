@@ -1,80 +1,54 @@
-from pyrogram import filters
+/eval from pyrogram import filters
 from xeonmodz import app
 from xeonmodz.lib.mode import isPrivate
 from PIL import Image
+import tempfile
 import os
 
-os.makedirs("downloads", exist_ok=True)
 
-@app.on_message(filters.command(["crop512", "c512"]) & filters.reply)
+@app.on_message(filters.command(["sticker"]) & filters.reply)
 @isPrivate
-async def crop_512(client, message):
+async def sticker_converter(client, message):
 
-    status = await message.reply_text("✂️ Cropping to 512x512...")
+    status = await message.reply_text("🖼 Creating sticker...")
 
     try:
 
         reply = message.reply_to_message
 
         if reply.photo:
-            file_path = await reply.download(
-                file_name=f"downloads/photo_{message.id}.jpg"
-            )
+            image_path = await reply.download()
 
-        elif reply.sticker:
-            file_path = await reply.download(
-                file_name=f"downloads/sticker_{message.id}.webp"
-            )
-
-        elif reply.document:
-            file_path = await reply.download(
-                file_name=f"downloads/file_{message.id}"
-            )
+        elif (
+            reply.document
+            and reply.document.mime_type
+            and reply.document.mime_type.startswith("image/")
+        ):
+            image_path = await reply.download()
 
         else:
             return await status.edit(
-                "❌ Reply to an image or sticker."
+                "❌ Reply to a PNG/JPG image."
             )
 
-        img = Image.open(file_path).convert("RGBA")
+        img = Image.open(image_path).convert("RGBA")
+        img.thumbnail((512, 512))
 
-        width, height = img.size
+        fd, sticker_path = tempfile.mkstemp(suffix=".webp")
+        os.close(fd)
 
-        # Crop to square from center
-        side = min(width, height)
+        img.save(sticker_path, "WEBP")
 
-        left = (width - side) // 2
-        top = (height - side) // 2
-        right = left + side
-        bottom = top + side
-
-        img = img.crop(
-            (left, top, right, bottom)
-        )
-
-        # Resize cropped square to 512x512
-        img = img.resize(
-            (512, 512),
-            Image.Resampling.LANCZOS
-        )
-
-        output = f"downloads/crop512_{message.id}.png"
-
-        img.save(
-            output,
-            format="PNG"
-        )
-
-        await message.reply_document(
-            output,
-            caption="✅ Cropped to 512×512"
-        )
+        with open(sticker_path, "rb") as sticker_file:
+            await message.reply_sticker(
+                sticker_file
+            )
 
         await status.delete()
 
         try:
-            os.remove(file_path)
-            os.remove(output)
+            os.remove(image_path)
+            os.remove(sticker_path)
         except:
             pass
 
