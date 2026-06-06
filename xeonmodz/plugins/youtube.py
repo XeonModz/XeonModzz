@@ -175,3 +175,50 @@
 
 
 
+import requests
+from pyrogram import filters
+from xeonmodz import app
+
+API = "https://xeon-yt-api.onrender.com"
+
+
+@app.on_message(filters.command(["song"]))
+async def ytmp3_handler(client, message):
+
+    if len(message.command) < 2:
+        return await message.reply_text(
+            "Usage:\n/hqsong <youtube_url>"
+        )
+
+    url = message.command[1]
+
+    msg = await message.reply_text(
+        "🎧 Fetching High Quality Audio..."
+    )
+
+    try:
+        data = requests.get(
+            f"{API}/ytmp3",
+            params={"url": url},
+            timeout=120
+        ).json()
+
+        if not data.get("status"):
+            return await msg.edit_text(
+                data.get("message", "Download failed")
+            )
+
+        await client.send_audio(
+            chat_id=message.chat.id,
+            audio=data["download"],
+            title=data.get("title", "HQ Audio"),
+            performer="Xeon Vro HQ",
+            file_name=f"{data.get('title', 'audio')}.mp3"
+        )
+
+        await msg.delete()
+
+    except Exception as e:
+        await msg.edit_text(
+            f"Error:\n{e}"
+        )
