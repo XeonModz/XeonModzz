@@ -98,6 +98,7 @@ async def menu(client, message):
         "/sticker": "Convert Image to Sticker",
         "/crop": "Crop Image to PDF 512x512",
         "/unzip": "Unzip the zip/video",
+        "/song": "Download YouTube music",
     }
 
     text = f"❍⊷══〘{BOT_NAME}〙══⊷❍\n\n🕊️ Available Commands:\n\n"
