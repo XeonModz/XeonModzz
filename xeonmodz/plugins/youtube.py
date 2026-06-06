@@ -184,19 +184,14 @@ API = "https://xeon-yt-api.onrender.com"
 
 @app.on_message(filters.command(["song"]))
 async def ytmp3_handler(client, message):
-
     if len(message.command) < 2:
-        return await message.reply_text(
-            "Usage:\n/hqsong <youtube_url>"
-        )
-
-    url = message.command[1]
-
-    msg = await message.reply_text(
-        "🎧 Fetching High Quality Audio..."
-    )
+        return
 
     try:
+        url = message.command[1]
+
+        await message.react("🦄")
+
         data = requests.get(
             f"{API}/ytmp3",
             params={"url": url},
@@ -204,9 +199,7 @@ async def ytmp3_handler(client, message):
         ).json()
 
         if not data.get("status"):
-            return await msg.edit_text(
-                data.get("message", "Download failed")
-            )
+            return await message.react("❌")
 
         await client.send_audio(
             chat_id=message.chat.id,
@@ -216,9 +209,7 @@ async def ytmp3_handler(client, message):
             file_name=f"{data.get('title', 'audio')}.mp3"
         )
 
-        await msg.delete()
+        await message.react("❤️")
 
-    except Exception as e:
-        await msg.edit_text(
-            f"Error:\n{e}"
-        )
+    except Exception:
+        await message.react("❌")
