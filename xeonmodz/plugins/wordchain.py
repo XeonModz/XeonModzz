@@ -346,13 +346,13 @@ async def cmd_wcg(_, message: Message):
         "🎮 **Dynamic Word Chain Game Starting...**\n"
         "👥 Needs 2 or more players 🙋‍♂️🙋‍♀️\n"
         "⏳ Type **join** — 60 seconds to join ⏳\n"
-        "🔄 Difficulty increases automatically as you play!\n"
+        "🔄 *Difficulty increases automatically as you play!*\n"
         "🟢 Start: 3+ letters, 40s per turn\n"
         "⚫ Master: 6+ letters, 15s per turn\n"
-        "⚡ Fewer players = Faster level progression!\n"
-        "📊 2 players: Every 5-12-24… words\n"
-        "📊 3 players: Every 6-15-30… words\n"
-        "📊 4+ players: Every 8-20-40… words",
+        "⚡ *Fewer players = Faster level progression!*\n"
+        "📊 *2 players: Every 5-12-24… words*\n"
+        "📊 *3 players: Every 6-15-30… words*\n"
+        "📊 *4+ players: Every 8-20-40… words*",
         disable_web_page_preview=True,
     )
 
@@ -465,6 +465,18 @@ async def cmd_wcgstats(_, message: Message):
 
 
 # ---------------------------------------------------------------------------
+# Reaction helper — pyrofork supports message.react()
+# Falls back silently if the chat doesn't allow reactions
+# ---------------------------------------------------------------------------
+
+async def react(message: Message, emoji: str):
+    try:
+        await message.react(emoji)
+    except Exception:
+        pass  # Silently ignore if reactions aren't allowed in the chat
+
+
+# ---------------------------------------------------------------------------
 # Incoming text handler — join + word submission
 # ---------------------------------------------------------------------------
 
@@ -488,15 +500,9 @@ async def handle_text(_, message: Message):
     # --- Join phase ---
     if text == "join" and game.state == "waiting":
         if game.add_player(user_id, username):
-            await message.reply_text(
-                f"[{username}](tg://user?id={user_id}) Joined 👏",
-                disable_web_page_preview=True,
-            )
+            await react(message, "👏")
         else:
-            await message.reply_text(
-                f"[{username}](tg://user?id={user_id}) You're already in the game!",
-                disable_web_page_preview=True,
-            )
+            await react(message, "👀")  # Already joined
         return
 
     # --- Active game word submission ---
@@ -518,24 +524,19 @@ async def handle_text(_, message: Message):
             return  # Ignore messages with non-alpha chars silently
 
         if word[0].upper() != game.current_letter:
-            await message.reply_text(
-                f"❌ Word must start with **{game.current_letter}**!"
-            )
+            await react(message, "❌")
             return
 
         if len(word) < game.difficulty["min_length"]:
-            await message.reply_text(
-                f"❌ Word must be at least **{game.difficulty['min_length']}** letters long! "
-                f"({game.difficulty['level']} level)"
-            )
+            await react(message, "❌")
             return
 
         if word in game.used_words:
-            await message.reply_text(f"❌ Word **{word}** has already been used!")
+            await react(message, "🔄")
             return
 
         if not game.is_valid_word(word):
-            await message.reply_text("_This word is not in my words list_")
+            await react(message, "🤔")
             return
 
         # Valid word — accept it
@@ -559,9 +560,8 @@ async def handle_text(_, message: Message):
         game.current_letter = word[-1].upper()
         game.advance_turn()
 
-        # React with emoji (reply)
-        reaction = "🏆" if new_longest else "✅"
-        await message.reply_text(reaction)
+        # React on the accepted word
+        await react(message, "🏆" if new_longest else "✅")
 
         if level_changed:
             await app.send_message(
