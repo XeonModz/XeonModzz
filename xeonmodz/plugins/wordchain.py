@@ -346,13 +346,13 @@ async def cmd_wcg(_, message: Message):
         "🎮 **Dynamic Word Chain Game Starting...**\n"
         "👥 Needs 2 or more players 🙋‍♂️🙋‍♀️\n"
         "⏳ Type **join** — 60 seconds to join ⏳\n"
-        "🔄 *Difficulty increases automatically as you play!*\n"
+        "🔄 Difficulty increases automatically as you play!\n"
         "🟢 Start: 3+ letters, 40s per turn\n"
         "⚫ Master: 6+ letters, 15s per turn\n"
-        "⚡ *Fewer players = Faster level progression!*\n"
-        "📊 *2 players: Every 5-12-24… words*\n"
-        "📊 *3 players: Every 6-15-30… words*\n"
-        "📊 *4+ players: Every 8-20-40… words*",
+        "⚡ Fewer players = Faster level progression!\n"
+        "📊 2 players: Every 5-12-24… words\n"
+        "📊 3 players: Every 6-15-30… words\n"
+        "📊 4+ players: Every 8-20-40… words",
         disable_web_page_preview=True,
     )
 
