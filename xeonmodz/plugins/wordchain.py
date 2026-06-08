@@ -471,7 +471,11 @@ async def cmd_wcgstats(_, message: Message):
 
 async def react(message: Message, emoji: str):
     try:
-        await message.react(emoji)
+        await app.send_reaction(
+            chat_id=message.chat.id,
+            message_id=message.id,
+            emoji=emoji,
+        )
     except Exception:
         pass  # Silently ignore if reactions aren't allowed in the chat
 
