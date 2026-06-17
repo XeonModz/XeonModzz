@@ -1,6 +1,6 @@
-![alt text](https://files.catbox.moe/zjx3mf.jpg)
-
-
+<p align="center">
+  <img src="https://files.catbox.moe/b34n8z.jpg" alt="XEON" width="700">
+</p>
 
 # XEON MODZ V1
 
