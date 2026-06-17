@@ -1,3 +1,7 @@
+![alt text](https://files.catbox.moe/vxbjur.jpg)
+
+
+
 # XEON MODZ V1
 
 A simple Telegram bot built using [Pyrogram](https://github.com/pyrogram/pyrogram) & [Pyrofrok](https://github.com/Mayuri-Chan/pyrofork), featuring basic command-line utilities.
