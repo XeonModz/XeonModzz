@@ -12,7 +12,7 @@ A simple Telegram bot built using [Pyrogram](https://github.com/pyrogram/pyrogra
 ## Installation
 1. Clone the repository:
    ```sh
-   git clone https://github.com/XeonModz/XeonModzz.git
+   git clone https://github.com/hrithikuday/XeonModzz.git
    cd XeonModzz
    ```
 2. Install dependencies:
