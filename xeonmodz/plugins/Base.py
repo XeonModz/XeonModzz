@@ -1,4 +1,5 @@
-# ©️ 2025 xeonmodz ALL RIGHTS RESERVED
+# Version: 1.0 Beta
+# ©️ 2026 XeonModz ALL RIGHTS RESERVED
 
 import logging
 from pyrogram import filters, __version__
@@ -10,7 +11,7 @@ from pyrogram.types import (
 
 from xeonmodz.lib.mode import isPrivate
 from xeonmodz import app
-from config import BOT_NAME, OWNER_NAME, OWNER_URL, OWNER_ID, IMAGE_LINK
+from config import BOT_NAME, OWNER_NAME, OWNER_URL, OWNER_ID, IMAGE_LINK, SUDO
 
 
 def start_caption():
@@ -59,9 +60,43 @@ async def start(client, message):
         )
 
 
-@app.on_message(filters.command(["menu", "help", "list"]))
+@app.on_message(filters.command(["menu", "help"]))
 @isPrivate
 async def menu(client, message):
+    text = (
+        f"❍⊷══〘{BOT_NAME} Menu〙══⊷❍\n\n"
+        "🕊️ **Categories & Commands:**\n\n"
+        "⚙️ **General:**\n"
+        "➤ `/start`, `/menu`, `/help`, `/list`, `/alive`\n\n"
+        "👑 **Owner:**\n"
+        "➤ `/owner`, `/eval`, `/reboot`, `/shutdown`, `/shell`, `/install`, `/uninstall`\n\n"
+        "👥 **Group:**\n"
+        "➤ `/ginfo`, `/tagall`, `/antibot`, `/antilink`\n\n"
+        "🛠️ **Utility:**\n"
+        "➤ `/id`, `/uptime`, `/stats`, `/upload`\n\n"
+        "🔍 **Search:**\n"
+        "➤ `/img`\n\n"
+        "✏️ **Edit:**\n"
+        "➤ `/pp`, `/gpp`, `/removebg`\n\n"
+        "🔄 **Converts:**\n"
+        "➤ `/fancy`, `/sticker`, `/crop`, `/unzip`, `/url`\n\n"
+        "🖥️ **System:**\n"
+        "➤ `/ping`, `/sysinfo`\n\n"
+        "📥 **Downloader:**\n"
+        "➤ `/insta`, `/teradl`, `/pin`, `/fb`, `/song`"
+    )
+
+    await message.reply_text(
+        text,
+        reply_markup=InlineKeyboardMarkup(
+            [[InlineKeyboardButton("⬅️ Back", callback_data="back_to_start")]]
+        )
+    )
+
+
+@app.on_message(filters.command("list"))
+@isPrivate
+async def list_commands(client, message):
 
     commands = {
         "/start": "Start the bot",
@@ -69,6 +104,7 @@ async def menu(client, message):
         "/menu": "Show available commands",
         "/help": "Show help message",
         "/list": "Show command list",
+        "/owner": "Show owner command list",
         "/eval": "Evaluate Python code",
         "/id": "Get chat ID",
         "/ping": "Check bot latency",
@@ -101,9 +137,36 @@ async def menu(client, message):
         "/song": "Download YouTube music",
     }
 
-    text = f"❍⊷══〘{BOT_NAME}〙══⊷❍\n\n🕊️ Available Commands:\n\n"
+    text = f"❍⊷══〘{BOT_NAME} Commands List〙══⊷❍\n\n🕊️ Available Commands:\n\n"
 
     for cmd, desc in commands.items():
+        text += f"➤ {cmd} - {desc}\n"
+
+    await message.reply_text(
+        text,
+        reply_markup=InlineKeyboardMarkup(
+            [[InlineKeyboardButton("⬅️ Back", callback_data="back_to_start")]]
+        )
+    )
+
+
+@app.on_message(filters.command("owner") & filters.user(SUDO))
+@isPrivate
+async def owner_menu(client, message):
+
+    owner_commands = {
+        "/owner": "Show owner command list",
+        "/eval": "Evaluate Python code",
+        "/reboot": "Restart the bot",
+        "/shutdown": "Shutdown the bot",
+        "/shell": "Run shell commands",
+        "/install": "Install plugins",
+        "/uninstall": "Uninstall plugins",
+    }
+
+    text = f"❍⊷══〘{BOT_NAME} Owner Menu〙══⊷❍\n\n👑 Owner Commands:\n\n"
+
+    for cmd, desc in owner_commands.items():
         text += f"➤ {cmd} - {desc}\n"
 
     await message.reply_text(
@@ -139,13 +202,30 @@ async def cb_handler(client, query: CallbackQuery):
         )
 
     elif query.data == "menu":
+        text = (
+            f"❍⊷══〘{BOT_NAME} Menu〙══⊷❍\n\n"
+            "🕊️ **Categories & Commands:**\n\n"
+            "⚙️ **General:**\n"
+            "➤ `/start`, `/menu`, `/help`, `/list`, `/alive`\n\n"
+            "👑 **Owner:**\n"
+            "➤ `/owner`, `/eval`, `/reboot`, `/shutdown`, `/shell`, `/install`, `/uninstall`\n\n"
+            "👥 **Group:**\n"
+            "➤ `/ginfo`, `/tagall`, `/antibot`, `/antilink`\n\n"
+            "🛠️ **Utility:**\n"
+            "➤ `/id`, `/uptime`, `/stats`, `/upload`\n\n"
+            "🔍 **Search:**\n"
+            "➤ `/img`\n\n"
+            "✏️ **Edit:**\n"
+            "➤ `/pp`, `/gpp`, `/removebg`\n\n"
+            "🔄 **Converts:**\n"
+            "➤ `/fancy`, `/sticker`, `/crop`, `/unzip`, `/url`\n\n"
+            "🖥️ **System:**\n"
+            "➤ `/ping`, `/sysinfo`\n\n"
+            "📥 **Downloader:**\n"
+            "➤ `/insta`, `/teradl`, `/pin`, `/fb`, `/song`"
+        )
         await query.message.edit_text(
-            "🕊️ Available Commands:\n\n"
-            "➤ /start\n"
-            "➤ /menu\n"
-            "➤ /help\n"
-            "➤ /list\n"
-            "➤ /ping",
+            text,
             reply_markup=InlineKeyboardMarkup(
                 [[InlineKeyboardButton("⬅️ Back", callback_data="back_to_start")]]
             )

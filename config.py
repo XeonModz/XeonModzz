@@ -1,3 +1,6 @@
+# Version: 1.0 Beta
+# ©️ 2026 XeonModz ALL RIGHTS RESERVED
+
 from dotenv import load_dotenv
 import os
 import time

@@ -1,5 +1,5 @@
 # Version: 1.0 Beta
-# ©️ 2025 XeonModz ALL RIGHTS RESERVED
+# ©️ 2026 XeonModz ALL RIGHTS RESERVED
 
 from pyrogram import Client
 from pymongo import MongoClient

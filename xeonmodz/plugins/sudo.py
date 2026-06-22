@@ -1,3 +1,6 @@
+# Version: 1.0 Beta
+# ©️ 2026 XeonModz ALL RIGHTS RESERVED
+
 from xeonmodz import app
 from config import SUDO 
 from xeonmodz.lib.base import sudo_usernames

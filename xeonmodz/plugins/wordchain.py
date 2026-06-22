@@ -1,3 +1,6 @@
+# Version: 1.0 Beta
+# ©️ 2026 XeonModz ALL RIGHTS RESERVED
+
 # Word Chain Game Plugin for XeonModz Bot
 # Ported from Node.js (souravkl11) to Python/Pyrogram
 # Compatible with XeonModz-V1 (Pyrogram-based bot)

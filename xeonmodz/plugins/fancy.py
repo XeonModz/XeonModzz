@@ -1,5 +1,6 @@
 # Version: 1.0 Beta
-# ©️ 2025 xeonmodz ALL RIGHTS RESERVED
+# ©️ 2026 XeonModz ALL RIGHTS RESERVED
+
 from pyrogram import Client, filters
 from pyrogram.types import Message
 from xeonmodz import app

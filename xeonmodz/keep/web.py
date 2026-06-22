@@ -1,3 +1,6 @@
+# Version: 1.0 Beta
+# ©️ 2026 XeonModz ALL RIGHTS RESERVED
+
 from xeonmodz.lib.base import get_os_uptime
 from flask import Flask, render_template
 import threading

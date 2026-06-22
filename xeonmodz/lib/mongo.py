@@ -1,3 +1,6 @@
+# Version: 1.0 Beta
+# ©️ 2026 XeonModz ALL RIGHTS RESERVED
+
 import os
 from pymongo import MongoClient
 from config import MONGO_URL

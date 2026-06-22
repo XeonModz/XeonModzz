@@ -6,12 +6,45 @@
 
 A simple Telegram bot built using [Pyrogram](https://github.com/pyrogram/pyrogram) & [Pyrofrok](https://github.com/Mayuri-Chan/pyrofork), featuring basic command-line utilities.
 
-## Features
+## Features & Commands
+
+### User Commands
+- `/start` - Start the bot.
+- `/alive` - Check bot status.
+- `/menu` / `/help` / `/list` - Show available commands.
+- `/id` - Get chat ID.
+- `/ping` - Check bot latency.
+- `/sysinfo` - Show system info.
+- `/stats` - Show bot statistics.
+- `/uptime` - Show bot uptime.
+- `/insta` - Instagram downloader.
+- `/teradl` - Terabox downloader.
+- `/pin` - Pinterest downloader.
+- `/upload` - Image uploader.
+- `/fancy` - Fancy text generator.
+- `/img` - Search images.
+- `/pp` - Update profile picture.
+- `/gpp` - Update group picture.
+- `/url` - Convert image/video/audio to URL.
+- `/fb` - Facebook downloader.
+- `/ginfo` - Show the group profile picture with details.
+- `/tagall` - Tag all members in group.
+- `/removebg` - Remove background of image.
+- `/antibot` - Remove all bots.
+- `/antilink` - Remove all links.
+- `/sticker` - Convert image to sticker.
+- `/crop` - Crop image to PDF 512x512.
+- `/unzip` - Unzip the zip/video.
+- `/song` - Download YouTube music.
+
+### Owner Commands (Requires Sudo Privileges)
+- `/owner` - Show owner command list.
 - `/eval <code>` - Evaluate Python expressions.
-- `/alive` - Check if the bot is running.
-- `/ping` - Test bot responsiveness.
 - `/reboot` - Restart the bot.
-- `/sysinfo` - Display system information.
+- `/shutdown` - Shutdown the bot.
+- `/shell` / `/cmd` - Run shell commands.
+- `/install` - Install plugins.
+- `/uninstall` - Uninstall plugins.
 
 ## Installation
 1. Clone the repository:

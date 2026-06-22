@@ -1,5 +1,7 @@
+# Version: 1.0 Beta
+# ©️ 2026 XeonModz ALL RIGHTS RESERVED
+
 # # Version: 1.0 Beta
-# # ©️ 2025 xeonmodz ALL RIGHTS RESERVED
 
 # from functools import wraps
 # from pyrogram import Client

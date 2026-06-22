@@ -1,3 +1,6 @@
+# Version: 1.0 Beta
+# ©️ 2026 XeonModz ALL RIGHTS RESERVED
+
 from pyrogram import filters
 from pyrogram.types import Message
 from pyrogram.enums import ChatType
