@@ -79,11 +79,11 @@ async def menu(client, message):
         "✏️ **Edit:**\n"
         "➤ `/pp`, `/gpp`, `/removebg`\n\n"
         "🔄 **Converts:**\n"
-        "➤ `/fancy`, `/sticker`, `/crop`, `/unzip`, `/url`\n\n"
+        "➤ `/fancy`, `/sticker`, `/crop`, `/unzip`\n\n"
         "🖥️ **System:**\n"
         "➤ `/ping`, `/sysinfo`\n\n"
         "📥 **Downloader:**\n"
-        "➤ `/insta`, `/teradl`, `/pin`, `/fb`, `/song`"
+        "➤ `/insta`, `/teradl`, `/pin`, `/fb`, `/song`, `/audio`, `/video`"
     )
 
     await message.reply_text(
@@ -124,7 +124,6 @@ async def list_commands(client, message):
         "/gpp": "Update group picture",
         "/install": "Install plugins",
         "/uninstall": "Uninstall plugins",
-        "/url": "convert to urls image/video/audio",
         "/fb": "Facebook downloader",
         "/ginfo": "Show the group pp with details",
         "/tagall": "tag all members in group",
@@ -135,6 +134,8 @@ async def list_commands(client, message):
         "/crop": "Crop Image to PDF 512x512",
         "/unzip": "Unzip the zip/video",
         "/song": "Download YouTube music",
+        "/audio": "Download YouTube audio (yt-dlp)",
+        "/video": "Download YouTube video (yt-dlp)",
     }
 
     text = f"❍⊷══〘{BOT_NAME} Commands List〙══⊷❍\n\n🕊️ Available Commands:\n\n"
@@ -162,6 +163,7 @@ async def owner_menu(client, message):
         "/shell": "Run shell commands",
         "/install": "Install plugins",
         "/uninstall": "Uninstall plugins",
+        "/setytcookies": "Set YouTube cookies (.txt)",
     }
 
     text = f"❍⊷══〘{BOT_NAME} Owner Menu〙══⊷❍\n\n👑 Owner Commands:\n\n"
@@ -218,11 +220,11 @@ async def cb_handler(client, query: CallbackQuery):
             "✏️ **Edit:**\n"
             "➤ `/pp`, `/gpp`, `/removebg`\n\n"
             "🔄 **Converts:**\n"
-            "➤ `/fancy`, `/sticker`, `/crop`, `/unzip`, `/url`\n\n"
+            "➤ `/fancy`, `/sticker`, `/crop`, `/unzip`\n\n"
             "🖥️ **System:**\n"
             "➤ `/ping`, `/sysinfo`\n\n"
             "📥 **Downloader:**\n"
-            "➤ `/insta`, `/teradl`, `/pin`, `/fb`, `/song`"
+            "➤ `/insta`, `/teradl`, `/pin`, `/fb`, `/song`, `/audio`, `/video`"
         )
         await query.message.edit_text(
             text,

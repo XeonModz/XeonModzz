@@ -25,7 +25,10 @@ async def main():
      await idle()      
 
 if __name__ == "__main__":
-    print(strt_msgs)  
+    try:
+        print(strt_msgs)
+    except UnicodeEncodeError:
+        print("XEON BOT - STARTING...")  
 # Import all plugins from the plugins database    
     pl = plugindb.find()
     for m in pl:
