@@ -33,7 +33,7 @@ IMGBB_API_KEY = os.environ.get("IMGBB_API_KEY", "dca13c2964fb813e7d8edc205729002
 # XEON_INSTA_API = "https://xeon-insta-api.onrender.com"
 # XEON_PIN_API = "https://xeon-pin-api.onrender.com"
 
-MONGO_URL = os.environ.get("MONGO_URL","mongodb+srv://XeonModz:XeonModz@xeonmodz.hbmiwst.mongodb.net/myDatabase?retryWrites=true&w=majority&appName=XeonModz")
+MONGO_URL = os.environ.get("MONGO_URL","mongodb+srv://XeonModz:XeonModz@xeonmodz.hbmiwst.mongodb.net/XeonModz?retryWrites=true&w=majority&appName=XeonModz")
 
 RENDER_EXTERNAL_URL = os.environ.get("RENDER_EXTERNAL_URL")
 
