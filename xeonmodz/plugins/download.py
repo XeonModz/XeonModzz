@@ -1,4 +1,4 @@
-# Version: 1.0 Beta
+# Version: 1.1
 # ©️ 2026 XeonModz ALL RIGHTS RESERVED
 
 from pyrogram import filters
@@ -9,6 +9,11 @@ import requests
 
 API_BASE = "https://xeon-apis.onrender.com"
 CAPTION = "𝚾𝛆𝛐𝛈𝚳𝛐𝛛𝐳"
+
+# Render free tier can cold-start (30-60s) after idling, and slow Facebook
+# scrapes can take a while too — give requests plenty of room before
+# giving up and calling it a failure.
+REQUEST_TIMEOUT = 90
 
 
 @app.on_message(filters.command("insta"))
@@ -26,10 +31,16 @@ async def instagram_downloader(_, message):
         r = requests.get(
             f"{API_BASE}/insta",
             params={"url": message.command[1]},
-            timeout=30
+            timeout=REQUEST_TIMEOUT
         )
 
-        data = r.json()
+        try:
+            data = r.json()
+        except ValueError:
+            await message.react("💔")
+            return await message.reply_text(
+                f"Instagram Error:\nBad response from API (HTTP {r.status_code})"
+            )
 
         if not (data.get("success") or data.get("status")):
             await message.react("💔")
@@ -92,6 +103,12 @@ async def instagram_downloader(_, message):
 
         await message.react("❤️")
 
+    except requests.exceptions.Timeout:
+        await message.react("💔")
+        await message.reply_text(
+            "Instagram Error:\nRequest timed out. Try again in a moment."
+        )
+
     except Exception as e:
         await message.react("💔")
         await message.reply_text(
@@ -114,10 +131,16 @@ async def pinterest_downloader(_, message):
         r = requests.get(
             f"{API_BASE}/pin",
             params={"url": message.command[1]},
-            timeout=30
+            timeout=REQUEST_TIMEOUT
         )
 
-        data = r.json()
+        try:
+            data = r.json()
+        except ValueError:
+            await message.react("💔")
+            return await message.reply_text(
+                f"Pinterest Error:\nBad response from API (HTTP {r.status_code})"
+            )
 
         if not (data.get("success") or data.get("status")):
             await message.react("💔")
@@ -148,6 +171,12 @@ async def pinterest_downloader(_, message):
 
         await message.react("❤️")
 
+    except requests.exceptions.Timeout:
+        await message.react("💔")
+        await message.reply_text(
+            "Pinterest Error:\nRequest timed out. Try again in a moment."
+        )
+
     except Exception as e:
         await message.react("💔")
         await message.reply_text(
@@ -170,46 +199,54 @@ async def facebook_downloader(_, message):
         r = requests.get(
             f"{API_BASE}/fb",
             params={"url": message.command[1]},
-            timeout=60
+            timeout=REQUEST_TIMEOUT
         )
 
-        data = r.json()
+        try:
+            data = r.json()
+        except ValueError:
+            await message.react("💔")
+            return await message.reply_text(
+                f"Facebook Error:\nBad response from API (HTTP {r.status_code})"
+            )
 
         if not (data.get("success") or data.get("status")):
             await message.react("💔")
             return await message.reply_text(
-                "Failed to fetch Facebook video."
+                data.get(
+                    "message",
+                    "Failed to fetch Facebook video."
+                )
             )
 
         title = data.get("title") or ""
         caption = f"{title}\n\n{CAPTION}" if title else CAPTION
 
-        video_url = (
-            data.get("videos", {})
-            .get("hd", {})
-            .get("url")
-        )
+        videos = data.get("videos") or {}
+
+        video_url = (videos.get("hd") or {}).get("url")
 
         if not video_url:
-            video_url = (
-                data.get("videos", {})
-                .get("sd", {})
-                .get("url")
-            )
+            video_url = (videos.get("sd") or {}).get("url")
 
-        if video_url:
-            await message.reply_video(
-                video_url,
-                caption=caption
-            )
-
-        else:
+        if not video_url:
             await message.react("💔")
             return await message.reply_text(
                 "No video found."
             )
 
+        await message.reply_video(
+            video_url,
+            caption=caption
+        )
+
         await message.react("❤️")
+
+    except requests.exceptions.Timeout:
+        await message.react("💔")
+        await message.reply_text(
+            "Facebook Error:\nRequest timed out. Try again in a moment."
+        )
 
     except Exception as e:
         await message.react("💔")
