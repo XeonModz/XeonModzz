@@ -204,18 +204,10 @@ async def facebook_downloader(_, message):
             )
 
         else:
-            photos = data.get("photos", [])
-
-            if photos:
-                await message.reply_photo(
-                    photos[0],
-                    caption=caption
-                )
-            else:
-                await message.react("💔")
-                return await message.reply_text(
-                    "No media found."
-                )
+            await message.react("💔")
+            return await message.reply_text(
+                "No video found."
+            )
 
         await message.react("❤️")
 
