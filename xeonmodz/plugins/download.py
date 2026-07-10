@@ -181,6 +181,9 @@ async def facebook_downloader(_, message):
                 "Failed to fetch Facebook video."
             )
 
+        title = data.get("title") or ""
+        caption = f"{title}\n\n{CAPTION}" if title else CAPTION
+
         video_url = (
             data.get("videos", {})
             .get("hd", {})
@@ -194,16 +197,25 @@ async def facebook_downloader(_, message):
                 .get("url")
             )
 
-        if not video_url:
-            await message.react("💔")
-            return await message.reply_text(
-                "No video found."
+        if video_url:
+            await message.reply_video(
+                video_url,
+                caption=caption
             )
 
-        await message.reply_video(
-            video_url,
-            caption=CAPTION
-        )
+        else:
+            photos = data.get("photos", [])
+
+            if photos:
+                await message.reply_photo(
+                    photos[0],
+                    caption=caption
+                )
+            else:
+                await message.react("💔")
+                return await message.reply_text(
+                    "No media found."
+                )
 
         await message.react("❤️")
 
