@@ -12,6 +12,9 @@ from xeonmodz.lib.mode import isPrivate
 API_BASE = "https://xeon-apis.onrender.com"
 CAPTION = "𝚾𝛆𝛐𝛈𝚳𝛐𝛛𝐳"
 
+# Telegram's hard limit for photo/video captions is 1024 characters.
+TELEGRAM_CAPTION_LIMIT = 1024
+
 # Render free tier can cold-start (30-60s) after idling, and slow scrapes
 # (Facebook especially) can take a while too — give requests plenty of
 # room before giving up and calling it a failure.
@@ -23,6 +26,26 @@ REQUEST_TIMEOUT = 90
 # time without the user ever noticing.
 COLD_START_RETRIES = 1
 COLD_START_RETRY_DELAY = 5  # seconds
+
+
+def build_caption(primary_text: str, suffix: str = CAPTION) -> str:
+    """
+    Combine a primary caption/title with the branding suffix.
+
+    If the combined text would exceed Telegram's caption limit, the
+    primary text is dropped entirely and only the branding suffix is
+    used — this avoids MEDIA_CAPTION_TOO_LONG errors without sending a
+    truncated/cut-off caption.
+    """
+    primary_text = primary_text or ""
+    if not primary_text:
+        return suffix
+
+    combined = f"{primary_text}\n\n{suffix}"
+    if len(combined) <= TELEGRAM_CAPTION_LIMIT:
+        return combined
+
+    return suffix
 
 
 def fetch_json(endpoint: str, params: dict):
@@ -116,7 +139,7 @@ async def instagram_downloader(_, message):
         return await message.reply_text("No media found.")
 
     post_caption = data.get("caption") or ""
-    caption = f"{post_caption}\n\n{CAPTION}" if post_caption else CAPTION
+    caption = build_caption(post_caption)
 
     try:
         # Single media item (post, reel, or single-image)
@@ -226,7 +249,7 @@ async def facebook_downloader(_, message):
         )
 
     title = data.get("title") or ""
-    caption = f"{title}\n\n{CAPTION}" if title else CAPTION
+    caption = build_caption(title)
 
     videos = data.get("videos") or {}
     video_url = (videos.get("hd") or {}).get("url") or (videos.get("sd") or {}).get("url")
