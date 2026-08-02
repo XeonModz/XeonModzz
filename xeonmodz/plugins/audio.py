@@ -1,4 +1,4 @@
-/eval # Version: 1.0
+# Version: 1.0
 # ©️ 2026 XeonModz ALL RIGHTS RESERVED
 
 import asyncio
